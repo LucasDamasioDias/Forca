@@ -1,0 +1,54 @@
+from random import choice
+
+# Lista de palavras para o jogo
+dic = ["bala", "bola", "uva", "peneira", "bolso", "balsa"]
+# Escolhendo uma palavra aleatória da lista
+password = choice(dic)
+# Inicializando a lista de letras ocultas
+field = ["-"] * len(password)
+# Inicializando o contador de erros
+miss = 0
+# Inicializando o contador de acertos
+hit = 0
+# Armazena as letras já digitadas
+was = []
+
+# Imprimindo o campo inicial
+print(''.join(field))
+
+# Loop principal do jogo
+while (hit < len(password)):
+    # Solicitar uma entrada do jogador e verificar se é uma letra
+    guess = input("Escolha uma letra: ")
+    # Converter a entrada do jogador para minúsculas
+    guess = guess.lower()
+    if not guess.isalpha() or len(guess) != 1:
+        print("Por favor, insira apenas uma letra.")
+        continue  # Volta ao início do loop se a entrada não for uma única letra
+    
+    # Verificar se a letra já foi digitada antes
+    if guess in was:
+        print("Você já escolheu esta letra.")
+        continue  # Volta ao início do loop se a letra já foi escolhida
+    
+    was.append(guess)
+    
+    # Verificando se a letra está na palavra
+    for i, letter in enumerate(password):
+        if letter == guess:
+            field[i] = guess
+            hit += 1
+    # Imprimindo o campo atualizado
+    print(''.join(field))
+    # Verificando se o jogador errou
+    if guess not in password:
+        miss += 1
+        print("Você errou, restam", 5 - miss, "chances!")
+        if miss == 5:
+            print("Você perdeu!")
+            print("A palavra era ", password)
+            break  # Sai do loop se o jogador perdeu
+
+# Se o jogador não perdeu e acertou todas as letras, então ele venceu
+if hit == len(password):
+    print("Parabéns! Você adivinhou a palavra:", password)
